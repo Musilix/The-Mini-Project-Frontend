@@ -22,8 +22,9 @@ export default class SearchForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    console.log(process.env.REACT_APP_MY_ENVIRONMENT_VARIABLE);
     const id = this.state.id; //TODO: use user session ID instead of form entered ID
-    fetch(`http://localhost:8080/messages/${id}`)
+    fetch(`${process.env.REACT_APP_API_URL}/messages/${id}`)
       .then((res) => {
         return res.json();
       })
