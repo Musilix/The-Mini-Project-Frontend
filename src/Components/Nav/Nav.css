@@ -1,0 +1,20 @@
+nav {
+  width: fit-content;
+  display: flex;
+  justify-content: flex-start;
+}
+
+#navlink-list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0px;
+  padding: 0px;
+}
+
+.navlink-element {
+  padding: 5px;
+  margin: 5px 10px;
+}

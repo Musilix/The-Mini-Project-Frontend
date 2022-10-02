@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
+import "./Nav.css";
 
 export default function Nav() {
   return (
     <nav>
-      <ul>
-        <li>
+      <ul id="navlink-list">
+        <li className="navlink-element">
           <NavLink
             to="/"
             className={(state) =>
@@ -15,7 +16,7 @@ export default function Nav() {
             HOME
           </NavLink>
         </li>
-        <li>
+        <li className="navlink-element">
           <NavLink
             to="/login"
             className={(state) =>

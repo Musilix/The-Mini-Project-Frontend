@@ -18,9 +18,9 @@ function App() {
       </header>
 
       <main>
-        <section>
+        <section className="splash-section">
           <Routes>
-            <Route path="/" element={<Splash />} />
+            <Route path="/" element={<Splash className="splash-wrap" />} />
             <Route path="/login" element={<SignInForm />} />
             {/* <Route path="/:username" element={<UserPage />} /> */}
             {/* <Route path="/:username/messages" element={<MessageList />} /> */}
