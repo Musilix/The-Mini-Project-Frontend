@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import "./Nav.css";
 
 export default function Nav() {
+  const signIn = true;
   return (
     <nav>
       <ul id="navlink-list">
@@ -22,6 +23,7 @@ export default function Nav() {
             className={(state) =>
               state.isActive ? "active-nav" : "active-nav"
             }
+            state={{ signIn }}
             end
           >
             LOGIN
