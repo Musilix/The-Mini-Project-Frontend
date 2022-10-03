@@ -15,13 +15,26 @@ function App() {
   const { user, setUser } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
 
-  // TODO: Refactor and put in worker class maybe
+  // TODO: abstract out to some worker or facade class
+  const getUserInfo = async () => {
+    const userInfo = await UserService.getUser()
+      .then((data) => data)
+      .catch((e) => console.error(e));
+
+    return userInfo;
+  };
+
   useEffect(() => {
-    UserService.getUser()
+    getUserInfo()
       .then((data) => {
         // is this the best practice? No probably...
         if (data) {
-          setUser(...data);
+          // THIS WAS A NECESSITY.
+          /* I was trying to send just "...data" to the setUser hook method, but I needed
+            /* to wrap it in an object (or array - obj in my case) in order for it to be properly 
+            /* destructured into the user state variable 
+            */
+          setUser({ ...data });
         }
       })
       .then(() => {
@@ -30,7 +43,7 @@ function App() {
         }, 1000);
       })
       .catch((e) => console.error(e));
-  }, []);
+  }, []); // <======== we need to make sure we specify useEffect to not have any dependencies that make it run. It hsould only run on initial load. Leaving deps field blank causes the DB to be infinitely called
 
   return (
     <div className="App">
@@ -48,7 +61,6 @@ function App() {
             </div>
           </header>
 
-          <p>{JSON.stringify(user)}</p>
           <main>
             <section className="splash-section">
               <Routes>

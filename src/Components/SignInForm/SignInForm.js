@@ -21,18 +21,13 @@ export default function SignInForm(props) {
     useTextInputState("");
 
   // NOTE that we use Object destructuring here instead of array destructuring, as we set the value prop on our authcontext provider equal to an object {}, not an array
-  const { user, setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
 
-  // TODO: Refactor and put in worker class maybe
+  // TODO: abstract out to some worker or facade class
   const getUserInfo = async () => {
-    // console.log("Trying to set context for user: ");
-    // UserService.getUser().then((data) => console.log(data));
-
     const userInfo = await UserService.getUser()
       .then((data) => data)
       .catch((e) => console.error(e));
-
-    // console.log(`Trying to populate session ctxt with: ${userInfo}`);
 
     return userInfo;
   };

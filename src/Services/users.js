@@ -1,8 +1,3 @@
-// interface User{
-//   username: string,
-//   password: string
-// }
-
 export function getUser() {
   return fetch("http://localhost:8080/whoami", {
     method: "GET",
