@@ -1,11 +1,14 @@
 import { useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useTextInputState from "../../Hooks/useTextInputState";
-import * as UserService from "../../Services/users";
+// import * as UserService from "../../Services/users";
+import * as UserWorker from "../../Workers/UserWorker";
 import { AuthContext } from "../AuthContext/AuthContext";
 
 // FUTURE NOTE: in functional components, MAKE SURE you pass in props as an arg to the funciton constructor!!!
 export default function SignInForm(props) {
+  // NOTE that we use Object destructuring here instead of array destructuring, as we set the value prop on our authcontext provider equal to an object {}, not an array
+  const { setUser } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -20,18 +23,6 @@ export default function SignInForm(props) {
   const [password, handlePasswordChange, handlePasswordReset] =
     useTextInputState("");
 
-  // NOTE that we use Object destructuring here instead of array destructuring, as we set the value prop on our authcontext provider equal to an object {}, not an array
-  const { setUser } = useContext(AuthContext);
-
-  // TODO: abstract out to some worker or facade class
-  const getUserInfo = async () => {
-    const userInfo = await UserService.getUser()
-      .then((data) => data)
-      .catch((e) => console.error(e));
-
-    return userInfo;
-  };
-
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -39,35 +30,22 @@ export default function SignInForm(props) {
     handlePasswordReset();
 
     if (signIn) {
-      // TODO: Refactor and put in worker class maybe
-      // SET USER SESSION IN DB
+      //* SET USER SESSION IN DB
       // You wanna know how stupid I am? I was doin a boatload of async calls, nested and shit - real deep shit - but should have just broken them down
-      // PREVIOUS
+      //* PREVIOUS
       // await UserService.setUser({ username, password }).then(() =>
       //   setUser(getUserInfo())
       // );
 
-      //CURRENT
-      await UserService.setUser({ username, password })
-        .then(() => getUserInfo())
-        .then((newUsrData) => {
-          setUser(newUsrData);
-        })
-        .catch((e) => console.error(e));
-
-      // TODO: Refactor and put in worker class maybe
-      // SET USER STATE HERE BY CALLIN BACKEND TO GET SESSION DATA (since cookies are only http only here)
-      // await setUser(getUserInfo());
-
-      //reroute after log in/context intiialization
-      navigate("/");
-
-      return;
+      //* CURRENT
+      // I hate sending in the context method setUser, but... ya know..
+      UserWorker.signInUser(username, password, setUser);
+    } else {
+      UserWorker.signUpUser(username, password, setUser);
     }
 
-    //do SIGN UP stuff
-
-    return 0;
+    navigate("/");
+    return;
   };
 
   return (

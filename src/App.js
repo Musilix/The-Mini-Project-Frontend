@@ -16,6 +16,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   // TODO: abstract out to some worker or facade class
+  //******************************************************* */
   const getUserInfo = async () => {
     const userInfo = await UserService.getUser()
       .then((data) => data)
@@ -23,6 +24,7 @@ function App() {
 
     return userInfo;
   };
+  //******************************************************* */
 
   useEffect(() => {
     getUserInfo()

@@ -12,7 +12,7 @@ export function getUser() {
   }).then((res) => res.json());
 }
 
-export function setUser(user) {
+export function signInUser(user) {
   // console.log(`user details are: ${JSON.stringify(user)}`);
   return fetch("http://localhost:8080/iam", {
     method: "POST",
@@ -41,3 +41,24 @@ export function logOutUser() {
     referrerPolicy: "no-referrer",
   }).then((res) => res.json());
 }
+
+export function signUpUser(user) {
+  return fetch("http://localhost:8080/users", {
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+    body: JSON.stringify({
+      ...user,
+    }),
+  }).then((res) => res.json());
+}
+
+export function getUserDetails(username) {}
+
+export function getUserMessages(username) {}
