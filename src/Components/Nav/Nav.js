@@ -36,11 +36,25 @@ export default function Nav() {
             </NavLink>
           </li>
         ) : (
-          <li>
-            <p className="logged-in-state-wrap">
-              logged in {user.username ? `as ${user.username}` : ""}
-            </p>
-          </li>
+          <>
+            <li>
+              <NavLink
+                to="/create"
+                className={(state) =>
+                  state.isActive ? "active-nav" : "active-nav"
+                }
+                state={{ signIn }}
+                end
+              >
+                CREATE POST
+              </NavLink>
+            </li>
+            <li>
+              <p className="logged-in-state-wrap">
+                logged in {user.username ? `as ${user.username}` : ""}
+              </p>
+            </li>
+          </>
         )}
       </ul>
     </nav>

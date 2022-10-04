@@ -20,28 +20,27 @@ export default function SignInForm(props) {
 
   const [username, handleUsernameChange, handleUserNameReset] =
     useTextInputState("");
-  const [password, handlePasswordChange, handlePasswordReset] =
-    useTextInputState("");
+  const [age, handleAgeChange, handleAgeReset] = useTextInputState("");
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
     handleUserNameReset();
-    handlePasswordReset();
+    handleAgeReset();
 
     if (signIn) {
       //* SET USER SESSION IN DB
       // You wanna know how stupid I am? I was doin a boatload of async calls, nested and shit - real deep shit - but should have just broken them down
       //* PREVIOUS
-      // await UserService.setUser({ username, password }).then(() =>
+      // await UserService.setUser({ username, age }).then(() =>
       //   setUser(getUserInfo())
       // );
 
       //* CURRENT
       // I hate sending in the context method setUser, but... ya know..
-      UserWorker.signInUser(username, password, setUser);
+      UserWorker.signInUser(username, age, setUser);
     } else {
-      UserWorker.signUpUser(username, password, setUser);
+      UserWorker.signUpUser(username, age, setUser);
     }
 
     navigate("/");
@@ -49,6 +48,7 @@ export default function SignInForm(props) {
   };
 
   return (
+    // TODO: Switch to use Formik?
     <form onSubmit={onSubmit}>
       <input
         type="text"
@@ -56,13 +56,14 @@ export default function SignInForm(props) {
         value={username}
         onChange={handleUsernameChange}
         placeholder="A name that fits you"
+        required
       ></input>
       <input
-        type="password"
-        name="password"
-        value={password}
-        onChange={handlePasswordChange}
-        placeholder="Super secret password"
+        type="age"
+        name="age"
+        value={age}
+        onChange={handleAgeChange}
+        placeholder="Don't be shy. Tell us how old you are. Or don't..."
       ></input>
       <button>{signIn ? "Sign In" : "Sign Up"}</button>
       <p>{signIn}</p>

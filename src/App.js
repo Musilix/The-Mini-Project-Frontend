@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { AuthContext } from "./Components/AuthContext/AuthContext";
+import { MessageForm } from "./Components/MessageForm/MessageForm";
 import Nav from "./Components/Nav/Nav";
 import SignInForm from "./Components/SignInForm/SignInForm";
 import Splash from "./Components/Splash/Splash";
@@ -78,6 +79,11 @@ function App() {
                   element={
                     !user ? <Navigate replace to="/login" /> : <UserPage />
                   }
+                />
+
+                <Route
+                  path="/create"
+                  element={user ? <MessageForm /> : <SignInForm />}
                 />
               </Routes>
             </section>
