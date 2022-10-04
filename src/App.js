@@ -18,8 +18,8 @@ function App() {
 
   // TODO: abstract out to some worker or facade class
   //******************************************************* */
-  const getUserInfo = async () => {
-    const userInfo = await UserService.getUser()
+  const getCurrentUserInfo = async () => {
+    const userInfo = await UserService.getCurrentUser()
       .then((data) => data)
       .catch((e) => console.error(e));
 
@@ -28,7 +28,7 @@ function App() {
   //******************************************************* */
 
   useEffect(() => {
-    getUserInfo()
+    getCurrentUserInfo()
       .then((data) => {
         // is this the best practice? No probably...
         if (data) {
@@ -74,11 +74,14 @@ function App() {
                     user ? <Navigate replace to="/user" /> : <SignInForm />
                   }
                 />
+
                 <Route
-                  path="/user"
-                  element={
-                    !user ? <Navigate replace to="/login" /> : <UserPage />
-                  }
+                  path="/:username"
+                  // element={
+                  //   !user ? <Navigate replace to="/login" /> : <UserPage />
+                  // }
+
+                  element={<UserPage />}
                 />
 
                 <Route

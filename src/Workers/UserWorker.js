@@ -1,8 +1,8 @@
 import * as UserService from "../Services/users";
 
 // closure this binch
-const getUserInfo = async () => {
-  const userInfo = await UserService.getUser()
+const getCurrentUserInfo = async () => {
+  const userInfo = await UserService.getCurrentUser()
     .then((data) => data)
     .catch((e) => console.error(e));
 
@@ -11,7 +11,7 @@ const getUserInfo = async () => {
 
 export async function signInUser(username, user_age, setUser) {
   await UserService.signInUser({ username, user_age })
-    .then(() => getUserInfo())
+    .then(() => getCurrentUserInfo())
     .then((newUsrData) => {
       setUser(newUsrData);
     })
@@ -22,4 +22,8 @@ export async function signUpUser(username, user_age, setUser) {
   await UserService.signUpUser({ username, user_age })
     .then(() => signInUser(username, user_age, setUser))
     .catch((e) => console.error(e.message));
+}
+
+export async function getUserInfo(username) {
+  return await UserService.getUserDetails(username);
 }

@@ -1,11 +1,16 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import * as UserService from "../../Services/users";
+import * as UserWorker from "../../Workers/UserWorker";
 import { AuthContext } from "../AuthContext/AuthContext";
 
 export default function UserPage() {
   const { user, setUser } = useContext(AuthContext);
+  const [isUs, setIsUs] = useState(null);
+  const [userWeLookAt, setUserWeLookAt] = useState({});
+
   const navigate = useNavigate();
+  const { username } = useParams();
 
   // TODO: Refactor and put in worker class maybe
   const handleLogOut = async () => {
@@ -15,25 +20,58 @@ export default function UserPage() {
     navigate("/login");
   };
 
+  useEffect(() => {
+    whoAreWeLookingAt().then((whoWeAreLookingAt) => {
+      const [lookingAt, isUss] = whoWeAreLookingAt;
+
+      setIsUs(isUss);
+      setUserWeLookAt(lookingAt);
+    });
+  }, []);
+
+  const whoAreWeLookingAt = async () => {
+    let isUs = null;
+
+    if (!user || username !== user.username) {
+      isUs = false;
+      return [await UserWorker.getUserInfo(username), isUs];
+    } else if (username === user.username) {
+      isUs = true;
+      return [user, isUs];
+    } else {
+      // TODO: 404, usr doesnt exist
+    }
+  };
+
   return (
     <div>
-      <h1>This is YOUR page!</h1>
+      {isUs ? <h1>This is YOUR page!</h1> : <></>}
+
       <p>
-        Your name is <b>{user.username}</b>
+        {isUs ? "Your" : "Their"} name is <b>{userWeLookAt.username}</b>
       </p>
-      {user.user_age ? (
+
+      {userWeLookAt.user_age ? (
         <p>
-          You're <b>{user.user_age}</b> years olds
+          {isUs ? "You're" : "They're"} <b>{userWeLookAt.user_age}</b> years
+          olds
         </p>
       ) : (
-        <p>You haven't told us your age yet</p>
+        <p>
+          {isUs ? "You" : "They"} haven't told us {isUs ? "your" : "their"} age
+          yet
+        </p>
       )}
 
-      <p>And you're messages are ...</p>
-      <p>yipee!</p>
+      <p>
+        {isUs
+          ? "Look back on your past posts"
+          : "Curious what they've been saying?"}
+      </p>
+
+      <button>VIEW MESSAGES</button>
 
       {user ? <button onClick={handleLogOut}>LOG OUT</button> : <></>}
-      {/* <button onClick={handleLogOut}>LOG OUT</button> */}
     </div>
   );
 }

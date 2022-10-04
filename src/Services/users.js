@@ -1,4 +1,4 @@
-export function getUser() {
+export function getCurrentUser() {
   return fetch("http://localhost:8080/whoami", {
     method: "GET",
     mode: "cors",
@@ -60,6 +60,18 @@ export function signUpUser(user) {
   }).then((res) => res.json());
 }
 
-export function getUserDetails(username) {}
+export function getUserDetails(username) {
+  return fetch(`http://localhost:8080/${username}`, {
+    method: "GET",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+  }).then((res) => res.json());
+}
 
 export function getUserMessages(username) {}
