@@ -1,3 +1,4 @@
+// TODO: switch host for backend calls to use eenv variable
 export function getCurrentUser() {
   return fetch("http://localhost:8080/whoami", {
     method: "GET",
@@ -75,3 +76,17 @@ export function getUserDetails(username) {
 }
 
 export function getUserMessages(username) {}
+
+export function getAllLiveUsers() {
+  return fetch(`http://localhost:8080/users`, {
+    method: "GET",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+  }).then((res) => res.json());
+}

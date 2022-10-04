@@ -8,6 +8,7 @@ import SignInForm from "./Components/SignInForm/SignInForm";
 import Splash from "./Components/Splash/Splash";
 import UserBubble from "./Components/UserBubble/UserBubble";
 import UserPage from "./Components/UserPage/UserPage";
+import { UsersList } from "./Components/UsersList/UsersList";
 import * as UserService from "./Services/users";
 
 function App() {
@@ -71,7 +72,11 @@ function App() {
                 <Route
                   path="/login"
                   element={
-                    user ? <Navigate replace to="/user" /> : <SignInForm />
+                    user ? (
+                      <Navigate replace to={`/${user.username}`} />
+                    ) : (
+                      <SignInForm />
+                    )
                   }
                 />
 
@@ -88,6 +93,7 @@ function App() {
                   path="/create"
                   element={user ? <MessageForm /> : <SignInForm />}
                 />
+                <Route path="/users" element={<UsersList />}></Route>
               </Routes>
             </section>
           </main>

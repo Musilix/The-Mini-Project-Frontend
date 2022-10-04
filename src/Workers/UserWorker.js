@@ -24,6 +24,11 @@ export async function signUpUser(username, user_age, setUser) {
     .catch((e) => console.error(e.message));
 }
 
+// TODO: Do I need to say "await" here?
 export async function getUserInfo(username) {
   return await UserService.getUserDetails(username);
+}
+
+export async function getAllLiveUsers() {
+  return await UserService.getAllLiveUsers();
 }

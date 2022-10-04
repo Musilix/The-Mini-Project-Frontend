@@ -34,6 +34,8 @@ export default function UserPage() {
 
     if (!user || username !== user.username) {
       isUs = false;
+      // for some reason, when putting the call to usr svc in the array, we need to await the respose.
+      // But strangely, if we just straight out only returned the call to the usr svc, it would work properly... weird
       return [await UserWorker.getUserInfo(username), isUs];
     } else if (username === user.username) {
       isUs = true;

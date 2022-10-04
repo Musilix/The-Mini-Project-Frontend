@@ -21,6 +21,17 @@ export default function Nav() {
             HOME
           </NavLink>
         </li>
+        <li className="navlink-element">
+          <NavLink
+            to="/users"
+            className={(state) =>
+              state.isActive ? "active-nav" : "active-nav"
+            }
+            end
+          >
+            USERS
+          </NavLink>
+        </li>
 
         {!user ? (
           <li className="navlink-element">
@@ -37,7 +48,7 @@ export default function Nav() {
           </li>
         ) : (
           <>
-            <li>
+            <li className="navlink-element">
               <NavLink
                 to="/create"
                 className={(state) =>
@@ -48,11 +59,6 @@ export default function Nav() {
               >
                 CREATE POST
               </NavLink>
-            </li>
-            <li>
-              <p className="logged-in-state-wrap">
-                logged in {user.username ? `as ${user.username}` : ""}
-              </p>
             </li>
           </>
         )}
