@@ -50,7 +50,8 @@ function App() {
   }, []); // <======== we need to make sure we specify useEffect to not have any dependencies that make it run. It hsould only run on initial load. Leaving deps field blank causes the DB to be infinitely called
 
   return (
-    <div className="App">
+    // TODO: determine if we need to switch this back to how it used to be... seems to be better than bfore
+    <>
       {isLoading ? (
         <div className="loading-wrap">
           <i className="fas fa-circle-notch fa-spin fa-4x"></i>
@@ -58,48 +59,53 @@ function App() {
         </div>
       ) : (
         <>
-          <header className="App-header">
-            <div id="top-bar-wrap">
-              <Nav></Nav>
-              <UserBubble />
-            </div>
-          </header>
+          <div className="App">
+            <header className="App-header">
+              <div id="top-bar-wrap">
+                <Nav></Nav>
+                <UserBubble />
+              </div>
+            </header>
 
-          <main>
-            <section className="splash-section">
-              <Routes>
-                <Route path="/" element={<Splash className="splash-wrap" />} />
-                <Route
-                  path="/login"
-                  element={
-                    user ? (
-                      <Navigate replace to={`/${user.username}`} />
-                    ) : (
-                      <SignInForm />
-                    )
-                  }
-                />
+            <main>
+              <section className="splash-section">
+                <Routes>
+                  <Route
+                    path="/"
+                    element={<Splash className="splash-wrap" />}
+                  />
+                  <Route
+                    path="/login"
+                    element={
+                      user ? (
+                        <Navigate replace to={`/${user.username}`} />
+                      ) : (
+                        <SignInForm />
+                      )
+                    }
+                  />
 
-                <Route
-                  path="/:username"
-                  // element={
-                  //   !user ? <Navigate replace to="/login" /> : <UserPage />
-                  // }
+                  <Route
+                    path="/:username"
+                    // element={
+                    //   !user ? <Navigate replace to="/login" /> : <UserPage />
+                    // }
 
-                  element={<UserPage />}
-                />
+                    element={<UserPage />}
+                  />
 
-                <Route
-                  path="/create"
-                  element={user ? <MessageForm /> : <SignInForm />}
-                />
-                <Route path="/users" element={<UsersList />}></Route>
-              </Routes>
-            </section>
-          </main>
+                  <Route
+                    path="/create"
+                    element={user ? <MessageForm /> : <SignInForm />}
+                  />
+                  <Route path="/users" element={<UsersList />}></Route>
+                </Routes>
+              </section>
+            </main>
+          </div>
         </>
       )}
-    </div>
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
 export function createMessage(message) {
-  return fetch("http://localhost:8080/messages", {
+  return fetch(`${process.env.REACT_APP_API_URL}/messages`, {
     method: "POST",
     mode: "cors",
     cache: "no-cache",
