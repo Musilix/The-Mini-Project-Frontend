@@ -33,7 +33,12 @@ export function createMessage(message) {
   return fetch(
     `${process.env.REACT_APP_API_URL}/messages`,
     getOpts("POST", message)
-  ).then((res) => res.json());
+  ).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    throw new Error("Failed to post your message");
+  });
 }
 
 export function getMessage() {}
@@ -42,7 +47,14 @@ export function getMessages(username) {
   return fetch(
     `${process.env.REACT_APP_API_URL}/${username}/messages`,
     getOpts("GET")
-  ).then((res) => res.json());
+  ).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+
+    // handle error checking here, but let whoever calls this method handle the error itself, as it could be different in different contexts
+    throw new Error(`Failed to get ${username}'s message`);
+  });
 }
 
 export function deleteMessage() {}

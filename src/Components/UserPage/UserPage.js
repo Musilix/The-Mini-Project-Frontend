@@ -71,7 +71,13 @@ export default function UserPage() {
           : "Curious what they've been saying?"}
       </p>
 
-      <button>VIEW MESSAGES</button>
+      <button
+        onClick={() => {
+          navigate(`/${username}/deeper`);
+        }}
+      >
+        VIEW MESSAGES
+      </button>
 
       {user ? <button onClick={handleLogOut}>LOG OUT</button> : <></>}
     </div>

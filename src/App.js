@@ -7,6 +7,7 @@ import Nav from "./Components/Nav/Nav";
 import SignInForm from "./Components/SignInForm/SignInForm";
 import Splash from "./Components/Splash/Splash";
 import UserBubble from "./Components/UserBubble/UserBubble";
+import { UserExtraDetails } from "./Components/UserExtraDetails/UserExtraDetails";
 import UserPage from "./Components/UserPage/UserPage";
 import { UsersList } from "./Components/UsersList/UsersList";
 import * as UserService from "./Services/users";
@@ -99,6 +100,10 @@ function App() {
                     element={user ? <MessageForm /> : <SignInForm />}
                   />
                   <Route path="/users" element={<UsersList />}></Route>
+                  <Route
+                    path="/:username/deeper"
+                    element={<UserExtraDetails />}
+                  ></Route>
                 </Routes>
               </section>
             </main>
