@@ -14,7 +14,6 @@ export function getCurrentUser() {
 }
 
 export function signInUser(user) {
-  // console.log(`user details are: ${JSON.stringify(user)}`);
   return fetch(`${process.env.REACT_APP_API_URL}/iam`, {
     method: "POST",
     mode: "cors", // no-cors, *cors, same-origin

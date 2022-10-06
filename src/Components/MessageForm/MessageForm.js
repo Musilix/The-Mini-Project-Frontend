@@ -15,23 +15,21 @@ export function MessageForm() {
     setMsgOutcome(null);
     setLoading(true);
 
+    // FUTURE NOTE: no need to use async await syntax as the fetch api allows us to handle res from async and use our callbacks to set state variables
     MessageWorker.createMessage({ user, message })
       .then(() => {
-        setLoading(false);
         setMsgOutcome(true);
+      })
+      .catch((e) => {
+        setMsgOutcome(false);
+      })
+      .finally(() => {
+        setLoading(false);
 
         // hide msg outcome after a few secs... user doesnt need to know that theyre message was succesfully for ever
         setTimeout(() => {
           setMsgOutcome(null);
         }, 1500);
-      })
-      .catch((e) => {
-        console.error("uh oh...");
-        console.error(e);
-
-        setMsgOutcome(false);
-
-        // TODO: set errorState to true and fill errorMsg with human readable junk
       });
 
     resetMessage();
