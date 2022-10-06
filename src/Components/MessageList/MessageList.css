@@ -1,0 +1,40 @@
+.results-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+.results-list li {
+  width: 100%;
+  border-radius: 8px;
+
+  padding: 10px;
+  margin: 5px 0px;
+
+  word-break: break-word;
+  box-sizing: border-box;
+  background-color: cornsilk;
+  border: 0.5px solid darkgrey;
+}
+
+.message-list-header {
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+
+p {
+  margin: 5px 0px;
+}
+
+.post-msg {
+  font-size: 24px;
+}
+
+.post-date-wrap {
+  font-size: 13px;
+  color: dimgray;
+}

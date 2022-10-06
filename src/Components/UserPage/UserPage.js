@@ -79,7 +79,11 @@ export default function UserPage() {
         VIEW MESSAGES
       </button>
 
-      {user ? <button onClick={handleLogOut}>LOG OUT</button> : <></>}
+      {user.username === userWeLookAt.username ? (
+        <button onClick={handleLogOut}>LOG OUT</button>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
