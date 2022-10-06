@@ -14,6 +14,8 @@ export function getMessages(username) {
 
 export function editMessage() {}
 
-export function deleteMessage() {}
+export function deleteMessage(messageId) {
+  return MessageService.deleteMessage(messageId);
+}
 
 export function deleteAllMessages() {}

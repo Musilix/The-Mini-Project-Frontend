@@ -23,7 +23,7 @@ export function UsersList() {
       <ul className="user-list">
         {activeUsers.map((user) => {
           return (
-            <div>
+            <div key={user.user_id}>
               <Link className="user-profile-link" to={`/${user.username}`}>
                 <li className="user-element">
                   <div className="user-ele-content">

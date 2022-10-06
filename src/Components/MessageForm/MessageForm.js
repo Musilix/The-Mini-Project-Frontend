@@ -1,13 +1,21 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useTextInputState from "../../Hooks/useTextInputState";
 import * as MessageWorker from "../../Workers/MessageWorker";
 import { AuthContext } from "../AuthContext/AuthContext";
+import "./MessageForm.css";
 
-export function MessageForm() {
+export default function MessageForm(props) {
   const [message, setMessage, resetMessage] = useTextInputState("");
   const { user } = useContext(AuthContext);
   const [isLoading, setLoading] = useState(false);
   const [msgOutcome, setMsgOutcome] = useState(null);
+
+  // useEffect(() => {
+  //   console.log(props);
+  //   if (props?.isModal && props?.msgToEdit) {
+  //     setMessage(props.msgToEdit.message);
+  //   }
+  // }, []);
 
   const handleMsgSub = (e) => {
     e.preventDefault();
@@ -40,12 +48,13 @@ export function MessageForm() {
   };
 
   return (
-    <div>
-      <h1>You can't do much here</h1>
-      <p>
-        But you can at least send messages to everyone else on this godforsaken
-        site. Make sure to make it meaningful!
-      </p>
+    <div
+      className={
+        (props.isModal ? "modal-mode" : "") +
+        " " +
+        (props.isModalActive ? "active-modal" : "disabled-modal")
+      }
+    >
       <form>
         <input
           className="msg-input"
@@ -61,6 +70,7 @@ export function MessageForm() {
       </form>
 
       {/*  THIS IS NASTTTTTTTTTY */}
+
       {isLoading ? (
         <div className="loading-wrap">
           <i className="fas fa-circle-notch fa-spin fa-4x"></i>

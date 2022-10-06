@@ -9,16 +9,16 @@ const getOpts = (method, content) => {
 
   if (method === "POST" && content) {
     return {
-      method: "POST",
+      method: method,
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ ...content }),
       ...baseOpts,
     };
-  } else if (method === "GET" && !content) {
+  } else if ((method === "GET" || method === "DELETE") && !content) {
     return {
-      method: "GET",
+      method: method,
       ...baseOpts,
     };
   } else {
@@ -57,7 +57,20 @@ export function getMessages(username) {
   });
 }
 
-export function deleteMessage() {}
+export function deleteMessage(messageId) {
+  return fetch(
+    `${process.env.REACT_APP_API_URL}/messages/${messageId}`,
+    getOpts("DELETE")
+  ).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+
+    throw new Error(
+      "The message you tried to delete doesn't exist. Maybe it was already deleted?"
+    );
+  });
+}
 
 export function deleteAllMessages() {}
 

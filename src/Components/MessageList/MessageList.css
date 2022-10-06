@@ -30,6 +30,11 @@ p {
   margin: 5px 0px;
 }
 
+.post-msg,
+.post-date-wrap {
+  margin: 0px;
+}
+
 .post-msg {
   font-size: 24px;
 }
@@ -37,4 +42,78 @@ p {
 .post-date-wrap {
   font-size: 13px;
   color: dimgray;
+}
+
+.full-msg-wrap {
+  padding: 10px 0px;
+}
+
+.post-opts-wrap {
+  display: flex;
+  flex-direction: row;
+}
+
+.edit-post-wrap,
+.del-post-wrap {
+  font-size: 13px;
+  margin: 18px 10px 0px 0px;
+  width: fit-content;
+  padding: 3px 5px;
+  border-radius: 5px;
+  text-align: center;
+
+  transition: all .2s ease-in-out;
+}
+
+.edit-post-wrap,
+.del-post-wrap {
+  background: LIGHTSLATEGREY;
+  color: #E7E9EB;
+  border: .5px solid #393939;
+}
+
+.edit-post-wrap:hover,
+.del-post-wrap:hover {
+  cursor: pointer;
+
+  background: #E7E9EB;
+  color: #393939;
+  border: .5px solid #393939;
+}
+
+/* .del-post-wrap {
+  background: #ee5253;
+  color: #c0392b;
+  border: .5px solid #ee5253;
+}
+
+.del-post-wrap:hover {
+  background: #c0392b;
+  color: #ee5253;
+  border: .5px solid #c0392b;
+
+  transition: all .2s ease-in-out;
+} */
+
+.full-msg-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px 0px;
+}
+
+.message-details {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.message-opts {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

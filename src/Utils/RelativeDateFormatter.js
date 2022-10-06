@@ -25,4 +25,6 @@ export function RelativeDateFormatter(date) {
   } else if (days > 0) {
     return `Posted ${days} days ago`;
   }
+
+  //TODO: add months and years
 }

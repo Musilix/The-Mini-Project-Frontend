@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { AuthContext } from "./Components/AuthContext/AuthContext";
-import { MessageForm } from "./Components/MessageForm/MessageForm";
+import { MessageFormHub } from "./Components/MessageFormHub/MessageFormHub";
 import Nav from "./Components/Nav/Nav";
 import SignInForm from "./Components/SignInForm/SignInForm";
 import Splash from "./Components/Splash/Splash";
@@ -97,7 +97,7 @@ function App() {
 
                   <Route
                     path="/create"
-                    element={user ? <MessageForm /> : <SignInForm />}
+                    element={user ? <MessageFormHub /> : <SignInForm />}
                   />
                   <Route path="/users" element={<UsersList />}></Route>
                   <Route
