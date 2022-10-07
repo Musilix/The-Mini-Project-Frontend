@@ -14,13 +14,13 @@ const convertTimeToReadable = (time) => {
   // loop through time elements
   // check if secs is readable (1-59), mins is readable (1-59) or days is visible (1-infinity)
   if (secs > 0 && secs < 59) {
-    return `${secs} seconds ago`;
+    return `${secs} second${secs > 1 ? "s" : ""} ago`;
   } else if (mins > 0 && mins < 59) {
-    return `${mins} minutes ago`;
+    return `${mins} minute${mins > 1 ? "s" : ""}  ago`;
   } else if (hrs > 0 && hrs < 59) {
-    return `${hrs} hours ago`;
+    return `${hrs} hour${hrs > 1 ? "s" : ""}  ago`;
   } else if (days > 0) {
-    return `${days} days ago`;
+    return `${days} day${days > 1 ? "s" : ""}  ago`;
   }
 };
 
