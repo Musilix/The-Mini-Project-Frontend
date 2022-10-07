@@ -7,7 +7,7 @@ const getOpts = (method, content) => {
     referrerPolicy: "no-referrer",
   };
 
-  if (method === "POST" && content) {
+  if ((method === "POST" || method === "PUT") && content) {
     return {
       method: method,
       headers: {
@@ -74,4 +74,16 @@ export function deleteMessage(messageId) {
 
 export function deleteAllMessages() {}
 
-export function editMessage() {}
+export function editMessage(messageObj) {
+  console.log(`trying to send this: ${JSON.stringify(messageObj)}`);
+  return fetch(
+    `${process.env.REACT_APP_API_URL}/message/${messageObj.id}`,
+    getOpts("PUT", { message: messageObj.message })
+  ).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+
+    throw new Error("There was an issue updating your message... sorry");
+  });
+}

@@ -16,6 +16,21 @@
   transition: all .2s ease-in-out;
 }
 
+.msg-input {
+  border-radius: 5px;
+  font-size: 24px;
+
+  width: 100%;
+  /* height: 431px; */
+
+  overflow: auto;
+  overflow-wrap: break-word;
+  word-break: break-all;
+
+  max-width: 100%;
+  min-width: 100%;
+}
+
 div {
   transition: all .2s ease-in-out;
 

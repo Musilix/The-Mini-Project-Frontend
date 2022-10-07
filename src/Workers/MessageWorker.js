@@ -12,7 +12,9 @@ export function getMessages(username) {
   return MessageService.getMessages(username);
 }
 
-export function editMessage() {}
+export function editMessage(msgObj) {
+  return MessageService.editMessage(msgObj);
+}
 
 export function deleteMessage(messageId) {
   return MessageService.deleteMessage(messageId);

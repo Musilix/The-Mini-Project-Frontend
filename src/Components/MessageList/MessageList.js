@@ -7,22 +7,43 @@ import "./MessageList.css";
 
 export default function MessageList(props) {
   const [messages, setMessages] = useState([]);
-  const [isModalActive, setIsModalActive] = useState(false);
-  const [msgToEdit, setMsgToEdit] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [msgToEditIds, setMsgToEditIds] = useState([]);
+
   const { user } = useContext(AuthContext);
 
+  // grab all a users messages on load
   useEffect(() => {
     grabUserMessages();
   }, []);
 
+  // TODO: combine these two edit methods...
   const handleEdit = (msgData) => {
-    // conditionally display edit component
-    setIsModalActive(true);
+    // create temp value that holds msgObj's message.
+    // edit and play with that
+    // on submit, check if the entered msg is different from the original msg
+    // -- if it is, call MessageWorker.editMessage()
+    // --if not, just break
 
-    setMsgToEdit(msgData);
+    // MessageWorker.editMessage(msgData).then(() => getMessages());
+    setIsEditing(true);
+    setMsgToEditIds([...msgToEditIds, msgData.id]);
+  };
 
-    // on edit component submission, come back in here and check to make sure this is our 2nd time in header
-    // - if so, hide the edit component
+  const handleFinishedEdit = (msgObj) => {
+    setIsEditing(false);
+    setMsgToEditIds(msgToEditIds.splice(msgToEditIds.indexOf(msgObj), 1));
+
+    const msgsWithLocalEdit = messages.map((msg) => {
+      if (msg.id === msgObj.id) {
+        return msgObj;
+      }
+
+      return msg;
+    });
+
+    // edit the existing msg with the changes, so we dont have to actually make a db call until refresh... could this be dangerous?
+    setMessages(msgsWithLocalEdit);
   };
 
   const handleDeletion = (id) => {
@@ -34,7 +55,7 @@ export default function MessageList(props) {
   const grabUserMessages = () => {
     MessageWorker.getMessages(props.username)
       .then((messages) => {
-        const msgFiller = messages.length > 0 ? messages : null;
+        const msgFiller = messages.length > 0 ? messages : null; //need to do this for conditional checks on msgs below...
         setMessages(msgFiller);
       })
       .catch((e) => {
@@ -44,53 +65,72 @@ export default function MessageList(props) {
 
   return (
     <div>
-      <div>
-        <h2 className="message-list-header">{`${props.username}'s Message History`}</h2>
-        {messages ? (
-          <ul className="results-list">
-            {messages.map((messageObj) => {
-              return (
-                <li key={messageObj.id}>
-                  <div className="full-msg-wrap">
-                    <div className="message-details">
+      <h2 className="message-list-header">{`${props.username}'s Message History`}</h2>
+      {messages ? (
+        <ul className="results-list">
+          {messages.map((messageObj) => {
+            return (
+              <li key={messageObj.id}>
+                <div className="full-msg-wrap">
+                  <div className="message-details">
+                    {isEditing && msgToEditIds.includes(messageObj.id) ? (
+                      <MessageForm
+                        isEditing={true}
+                        msgToEdit={messageObj}
+                        handleFinishedEdit={handleFinishedEdit}
+                      />
+                    ) : (
                       <p className="post-msg">{messageObj.message}</p>
+                    )}
+
+                    <div className="post-time-details">
                       <p className="post-date-wrap">
-                        {RelativeDateFormatter(messageObj.posting_date)}
+                        Posted {RelativeDateFormatter(messageObj.posting_date)}
                       </p>
-                      {user.username === props.username ? (
-                        <div className="post-opts-wrap">
-                          <p className="edit-post-wrap">Edit Post</p>
-                          <p
-                            className="del-post-wrap"
-                            onClick={() => {
-                              handleDeletion(messageObj.id);
-                            }}
-                          >
-                            Delete
-                          </p>
-                        </div>
+
+                      {messageObj.edit_date !== null &&
+                      messageObj.edit_date !== messageObj.posting_date ? (
+                        <p className="edit-date-wrap">{`Edited ${RelativeDateFormatter(
+                          messageObj.edit_date
+                        )}`}</p>
                       ) : (
                         <></>
                       )}
                     </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p>
-            Doesn't look like {props.username} has said anything yet! Let's hope
-            that changed in the future!
-          </p>
-        )}
-      </div>
 
-      <MessageForm
-        isModal={true}
-        msgToEdit={msgToEdit}
-        isModalActive={isModalActive}
-      />
+                    {/* TODO: abstract out msg options to its own component? */}
+                    {user?.username === props.username ? (
+                      <div className="post-opts-wrap">
+                        <p
+                          className="edit-post-wrap"
+                          onClick={() => handleEdit(messageObj)}
+                        >
+                          Edit Post
+                        </p>
+                        <p
+                          className="del-post-wrap"
+                          onClick={() => {
+                            handleDeletion(messageObj.id);
+                          }}
+                        >
+                          Delete
+                        </p>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p>
+          Doesn't look like {props.username} has said anything yet! Let's hope
+          that changed in the future!
+        </p>
+      )}
     </div>
   );
 }

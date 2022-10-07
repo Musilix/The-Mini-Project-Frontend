@@ -1,30 +1,34 @@
-export function RelativeDateFormatter(date) {
-  let stringDate = date; //date
+export function RelativeDateFormatter(post_date, edit_date = Date.now()) {
+  const deltaD = timeDifference(post_date, edit_date);
+  //TODO: add months and years
 
-  let postDate = new Date(stringDate);
-  let now = new Date(Date.now());
+  return convertTimeToReadable(deltaD);
+}
 
-  let deltaD = Math.abs(now - postDate);
-
-  let secs = Math.round(deltaD / 1000);
-  let mins = Math.round(deltaD / (1000 * 60));
-  let hrs = Math.round(deltaD / (1000 * 60 * 60));
-  let days = Math.round(deltaD / (1000 * 60 * 60 * 24));
-
-  // const times = [seconds, mins, days]
-  // let humanReadableTime = "";
+const convertTimeToReadable = (time) => {
+  let secs = Math.round(time / 1000);
+  let mins = Math.round(time / (1000 * 60));
+  let hrs = Math.round(time / (1000 * 60 * 60));
+  let days = Math.round(time / (1000 * 60 * 60 * 24));
 
   // loop through time elements
   // check if secs is readable (1-59), mins is readable (1-59) or days is visible (1-infinity)
   if (secs > 0 && secs < 59) {
-    return `Posted ${secs} seconds ago`;
+    return `${secs} seconds ago`;
   } else if (mins > 0 && mins < 59) {
-    return `Posted ${mins} minutes ago`;
+    return `${mins} minutes ago`;
   } else if (hrs > 0 && hrs < 59) {
-    return `Posted ${hrs} hours ago`;
+    return `${hrs} hours ago`;
   } else if (days > 0) {
-    return `Posted ${days} days ago`;
+    return `${days} days ago`;
   }
+};
 
-  //TODO: add months and years
-}
+const timeDifference = (d1, d2) => {
+  const postDate = new Date(d1);
+  const now = new Date(d2);
+
+  const deltaD = Math.abs(now - postDate);
+
+  return deltaD;
+};

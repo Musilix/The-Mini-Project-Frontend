@@ -39,9 +39,20 @@ p {
   font-size: 24px;
 }
 
-.post-date-wrap {
+.post-time-details {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  flex-direction: row;
+}
+
+.post-time-details>* {
   font-size: 13px;
   color: dimgray;
+}
+
+.edit-date-wrap {
+  margin: 0px 0px 0px 15px;
 }
 
 .full-msg-wrap {

@@ -7,15 +7,18 @@ import "./MessageForm.css";
 export default function MessageForm(props) {
   const [message, setMessage, resetMessage] = useTextInputState("");
   const { user } = useContext(AuthContext);
+
   const [isLoading, setLoading] = useState(false);
   const [msgOutcome, setMsgOutcome] = useState(null);
 
-  // useEffect(() => {
-  //   console.log(props);
-  //   if (props?.isModal && props?.msgToEdit) {
-  //     setMessage(props.msgToEdit.message);
-  //   }
-  // }, []);
+  useEffect(() => {
+    // TODO: CHANGE THIS EXPEDITIOUSLY... awful hacky way to utilize our custom userTextInputState hook for both manual msg sets + textarea evt triggered msg sets
+    if (props.isEditing && props.msgToEdit) {
+      const e = { target: { value: props.msgToEdit.message } };
+
+      setMessage(e);
+    }
+  }, []);
 
   const handleMsgSub = (e) => {
     e.preventDefault();
@@ -23,22 +26,60 @@ export default function MessageForm(props) {
     setMsgOutcome(null);
     setLoading(true);
 
-    // FUTURE NOTE: no need to use async await syntax as the fetch api allows us to handle res from async and use our callbacks to set state variables
-    MessageWorker.createMessage({ user, message })
-      .then(() => {
-        setMsgOutcome(true);
-      })
-      .catch((e) => {
-        setMsgOutcome(false);
-      })
-      .finally(() => {
-        setLoading(false);
+    //TODO: return just the worker call, then append the then(),catch(), and finally() calls...
+    if (!props.isEditing) {
+      // FUTURE NOTE: no need to use async await syntax as the fetch api allows us to handle res from async and use our callbacks to set state variables
+      MessageWorker.createMessage({ user, message })
+        .then(() => {
+          setMsgOutcome(true);
+        })
+        .catch((e) => {
+          setMsgOutcome(false);
+        })
+        .finally(() => {
+          setLoading(false);
 
-        // hide msg outcome after a few secs... user doesnt need to know that theyre message was succesfully for ever
-        setTimeout(() => {
-          setMsgOutcome(null);
-        }, 1500);
-      });
+          // hide msg outcome after a few secs... user doesnt need to know that theyre message was succesfully for ever
+          setTimeout(() => {
+            setMsgOutcome(null);
+          }, 1500);
+        });
+    } else {
+      // check if new msg is different from old one - make call to db if so
+      if (message !== props.msgToEdit.message) {
+        // if so, call worker
+        MessageWorker.editMessage({ ...props.msgToEdit, message })
+          .then(() => {
+            // use closure prop method to edit parents isEditing state, so we can hide the edit textarea and show the actual msg again
+
+            props.handleFinishedEdit({ ...props.msgToEdit, message });
+            setMsgOutcome(true);
+          })
+          .catch((e) => {
+            setMsgOutcome(false);
+          })
+          .finally(() => {
+            setLoading(false);
+
+            // hide msg outcome after a few secs... user doesnt need to know that theyre message was succesfully for ever
+            setTimeout(() => {
+              setMsgOutcome(null);
+            }, 1500);
+          });
+
+        return;
+      }
+
+      // just bypass the Message Worker call. go through the rest of the process though
+      props.handleFinishedEdit({ ...props.msgToEdit });
+      setMsgOutcome(true);
+      setLoading(false);
+      setTimeout(() => {
+        setMsgOutcome(null);
+      }, 1500);
+
+      return;
+    }
 
     resetMessage();
   };
@@ -48,24 +89,18 @@ export default function MessageForm(props) {
   };
 
   return (
-    <div
-      className={
-        (props.isModal ? "modal-mode" : "") +
-        " " +
-        (props.isModalActive ? "active-modal" : "disabled-modal")
-      }
-    >
+    <div className={props.isEditing ? "" : ""}>
       <form>
-        <input
+        <textarea
           className="msg-input"
           name="message"
           value={message}
           onChange={handleMsgChange}
           placeholder="What would you like to say?"
           required
-        ></input>
+        ></textarea>
         <button className="msg-sub-butt" onClick={handleMsgSub}>
-          POST
+          {!props.isEditing ? "POST" : "SAVE"}
         </button>
       </form>
 
