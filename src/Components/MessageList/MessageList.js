@@ -19,13 +19,6 @@ export default function MessageList(props) {
 
   // TODO: combine these two edit methods...
   const handleEdit = (msgData) => {
-    // create temp value that holds msgObj's message.
-    // edit and play with that
-    // on submit, check if the entered msg is different from the original msg
-    // -- if it is, call MessageWorker.editMessage()
-    // --if not, just break
-
-    // MessageWorker.editMessage(msgData).then(() => getMessages());
     setIsEditing(true);
     setMsgToEditIds([...msgToEditIds, msgData.id]);
   };
