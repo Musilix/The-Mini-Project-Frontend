@@ -1,5 +1,13 @@
-export function RelativeDateFormatter(post_date, edit_date = Date.now()) {
-  const deltaD = timeDifference(post_date, edit_date);
+export function RelativeDateFormatter(firstDate, secondDate = Date.now()) {
+  let firstDateAdjusted = secondDate;
+  if (firstDate) {
+    firstDateAdjusted = new Date(firstDate);
+    firstDateAdjusted.setMinutes(
+      firstDateAdjusted.getMinutes() - firstDateAdjusted.getTimezoneOffset()
+    );
+  }
+
+  const deltaD = timeDifference(firstDateAdjusted, secondDate);
   //TODO: add months and years
 
   return convertTimeToReadable(deltaD);
@@ -21,6 +29,8 @@ const convertTimeToReadable = (time) => {
     return `${hrs} hour${hrs > 1 ? "s" : ""}  ago`;
   } else if (days > 0) {
     return `${days} day${days > 1 ? "s" : ""}  ago`;
+  } else {
+    return `extremely recent`; //fail safe if for some reason an undefined/NaN val gets created... somehow this was happening at one point, but seemingly resolved itself. Weird. We'll keep a look out in the future
   }
 };
 

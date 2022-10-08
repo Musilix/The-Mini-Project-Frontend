@@ -51,8 +51,10 @@ export default function MessageForm(props) {
         MessageWorker.editMessage({ ...props.msgToEdit, message })
           .then(() => {
             // use closure prop method to edit parents isEditing state, so we can hide the edit textarea and show the actual msg again
-
-            props.handleFinishedEdit({ ...props.msgToEdit, message });
+            props.handleFinishedEdit({
+              ...props.msgToEdit,
+              message,
+            });
             setMsgOutcome(true);
           })
           .catch((e) => {

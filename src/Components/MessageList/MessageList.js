@@ -27,8 +27,10 @@ export default function MessageList(props) {
     setIsEditing(false);
     setMsgToEditIds(msgToEditIds.splice(msgToEditIds.indexOf(msgObj), 1));
 
+    // persist post's msg edits locally if db was succesful. this can keep us from making an unecessary extra db call
     const msgsWithLocalEdit = messages.map((msg) => {
       if (msg.id === msgObj.id) {
+        msgObj.edit_date = null;
         return msgObj;
       }
 
@@ -81,7 +83,8 @@ export default function MessageList(props) {
                         Posted {RelativeDateFormatter(messageObj.posting_date)}
                       </p>
 
-                      {messageObj.edit_date !== null &&
+                      {(messageObj.edit_date !== null ||
+                        messageObj.edit_date !== undefined) &&
                       messageObj.edit_date !== messageObj.posting_date ? (
                         <p className="edit-date-wrap">{`Edited ${RelativeDateFormatter(
                           messageObj.edit_date
