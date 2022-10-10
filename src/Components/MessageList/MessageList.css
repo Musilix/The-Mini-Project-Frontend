@@ -122,6 +122,10 @@ p {
   justify-content: center;
 }
 
+.message-details>* {
+  margin: 2.5px 0px;
+}
+
 .message-opts {
   display: flex;
   flex-direction: column;
